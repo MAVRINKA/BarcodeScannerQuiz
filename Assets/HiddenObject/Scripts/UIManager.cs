@@ -71,6 +71,7 @@ public class UIManager : MonoBehaviour
     }
 
     public TMP_InputField inputField;
+    public SerialController serialController;
 
     public void CheckSelectedHiddenObjectInput()
     {
@@ -79,6 +80,19 @@ public class UIManager : MonoBehaviour
             if (inputField.text == hiddenObjectIconList[i].name)                          //check if index is same as name [our name is a number]
             {
                 hiddenObjectIconList[i].SetActive(false);                       //deactivate the icon
+                break;                                                          //break from the loop
+            }
+        }
+    }
+
+    public void CheckSelectedHiddenObjectComPort(string message)
+    {
+        for (int i = 0; i < hiddenObjectIconList.Count; i++)                    //loop through the list
+        {
+            if (message == hiddenObjectIconList[i].name)                          //check if index is same as name [our name is a number]
+            {
+                hiddenObjectIconList[i].SetActive(false);                       //deactivate the icon
+                LevelManager.instance.totalHiddenObjectsFound++;
                 break;                                                          //break from the loop
             }
         }

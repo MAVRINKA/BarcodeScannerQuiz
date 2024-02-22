@@ -79,14 +79,25 @@ public class LevelManager : MonoBehaviour
     private void Update()
     {
         //GameActive();
+        currentTime -= Time.deltaTime;  //as long as gamestatus i in playing, we keep reducing currentTime by Time.deltaTime
+
+        time = TimeSpan.FromSeconds(currentTime);                       //set the time value
+        UIManager.instance.TimerText.text = time.ToString("mm':'ss");   //convert time to Time format
+        if (currentTime <= 0)                                           //if currentTime is less or equal to zero
+        {
+            Debug.Log("Time Up");                                       //if yes then we have lost the game
+            UIManager.instance.GameCompleteObj.SetActive(true);         //activate GameComplete panel
+            gameStatus = GameStatus.NEXT;                               //set gamestatus to Next
+        }
     }
 
+    //ЭТУ ФУНКЦИЮ НА ДЕЛЕГАТАХ 
     public void GameBarcodeScanner()
     {
         if (gameStatus == GameStatus.PLAYING)                               //check if gamestatus is Playing
         {
                     //Remember we renamed all our object to their respective Index, we did it for UIManager
-                    UIManager.instance.CheckSelectedHiddenObjectInput(); //send the name of hit object to UIManager
+                    //UIManager.instance.CheckSelectedHiddenObjectInput(); //send the name of hit object to UIManager
 
                     //for (int i = 0; i < activeHiddenObjectList.Count; i++)
                     //{
@@ -97,7 +108,7 @@ public class LevelManager : MonoBehaviour
                     //    }
                     //}
 
-                    totalHiddenObjectsFound++;                              //increase totalHiddenObjectsFound count
+                    //totalHiddenObjectsFound++;                              //increase totalHiddenObjectsFound count
 
                     //check if totalHiddenObjectsFound is more or equal to maxHiddenObjectToFound
                     if (totalHiddenObjectsFound >= maxHiddenObjectToFound)
@@ -106,17 +117,6 @@ public class LevelManager : MonoBehaviour
                         UIManager.instance.GameCompleteObj.SetActive(true); //activate GameComplete panel
                         gameStatus = GameStatus.NEXT;                       //set gamestatus to Next
                     }
-
-            currentTime -= Time.deltaTime;  //as long as gamestatus i in playing, we keep reducing currentTime by Time.deltaTime
-
-            time = TimeSpan.FromSeconds(currentTime);                       //set the time value
-            UIManager.instance.TimerText.text = time.ToString("mm':'ss");   //convert time to Time format
-            if (currentTime <= 0)                                           //if currentTime is less or equal to zero
-            {
-                Debug.Log("Time Up");                                       //if yes then we have lost the game
-                UIManager.instance.GameCompleteObj.SetActive(true);         //activate GameComplete panel
-                gameStatus = GameStatus.NEXT;                               //set gamestatus to Next
-            }
         }
     }
 
